@@ -78,44 +78,107 @@ By demo day, every GIX student will have a Hoppers animal — and nobody will ag
 
 ---
 
-## Project Structure (planned)
+## Issue 1: Set up project structure and database schema
 
-```
-hoppers/
-├── app/
-│   ├── onboarding/      # 5-question quiz + animal reveal
-│   ├── meadow/          # Live canvas + chat overlay
-│   └── debrief/         # Vote results + tell report
-├── lib/
-│   ├── supabase.ts      # Supabase client
-│   └── claude.ts        # Claude API helpers
-├── supabase/
-│   └── migrations/      # DB schema migrations
-├── SPEC.md
-└── README.md
-```
+### Tasks
+- Initialize Next.js project with App Router
+- Connect Supabase project
+- Create `animals` table (id, display_name, species, quirks, is_ai, user_id)
+- Create `conversations` table (id, animal_a, animal_b, chat_log, vote_by_a, vote_by_b)
+- Set up environment variables (.env.local)
+
+### Acceptance Criteria
+- [ ] Both tables exist in Supabase
+- [ ] App runs locally with `npm run dev`
 
 ---
 
-## Getting Started (Developer Setup)
+## Issue 2: Build animal generation onboarding flow
 
-```bash
-# 1. Clone the repo
-git clone <repo-url>
-cd hoppers
+### Tasks
+- Design 5-question personality quiz UI
+- Call Claude API with quiz answers to generate species, name, and 2–3 quirks
+- Store generated animal in `animals` table
+- Build reveal animation screen
 
-# 2. Install dependencies
-npm install
-
-# 3. Set environment variables
-cp .env.example .env.local
-# Fill in: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_KEY, ANTHROPIC_API_KEY
-
-# 4. Run locally
-npm run dev
-```
+### Acceptance Criteria
+- [ ] User completes quiz in under 60 seconds
+- [ ] Claude returns species, name, and quirks
+- [ ] Animal saved to database
+- [ ] Reveal animation displays correctly
 
 ---
 
-## License
+## Issue 3: Build Live Meadow view with real-time presence
+
+### Tasks
+- Build canvas/grid UI showing all active animals
+- Use Supabase Realtime to show animals joining/leaving
+- Animals appear within 2 seconds of joining
+
+### Acceptance Criteria
+- [ ] Meadow updates in real time
+- [ ] Each animal displays their species and name
+- [ ] Works with multiple browser tabs simultaneously
+
+---
+
+## Issue 4: Implement chat overlay with 3-minute timer and vote modal
+
+### Tasks
+- Click on animal → opens chat overlay
+- 3-minute countdown timer enforced
+- Chat auto-closes when timer hits 0
+- Vote modal appears: "Human or Bot?"
+- Vote stored in `conversations` table
+- Reveal shown immediately after vote
+
+### Acceptance Criteria
+- [ ] Timer enforces 3-minute limit
+- [ ] Vote is recorded before reveal is shown
+- [ ] Reveal displays who/what the animal actually was
+
+---
+
+## Issue 5: Seed and manage AI imposter personas
+
+### Tasks
+- Generate AI personas via Claude API (GIX track, hobby, stress point)
+- Store AI animals in `animals` table with `is_ai = true`
+- AI responds to chat messages via Claude API within 3 seconds
+- AI instructed to sound like a grad student, not a chatbot
+
+### Acceptance Criteria
+- [ ] At least 3 AI imposters active in meadow
+- [ ] AI responds within 3 seconds
+- [ ] AI persona stays consistent throughout conversation
+
+---
+
+## Issue 6: Build post-round debrief page with AI tell report
+
+### Tasks
+- Display vote accuracy summary for each chat in the session
+- Call Claude API to generate "tell report" analyzing the session
+- Show which phrases gave away bots, which humans were mistaken for bots
+
+### Acceptance Criteria
+- [ ] Debrief shows results for all chats in session
+- [ ] Tell report generated within 10 seconds of session end
+- [ ] Tell report is specific to that session's conversations
+
+---
+
+## Issue 7: Deploy to Vercel and end-to-end testing
+
+### Tasks
+- Deploy app to Vercel
+- Set all environment variables in Vercel dashboard
+- Test full flow: onboarding → meadow → chat → vote → debrief
+- Share public URL
+
+### Acceptance Criteria
+- [ ] App accessible via public Vercel URL
+- [ ] All three views work end-to-end in production
+- [ ] At least 5 AI imposters seeded for demo day
 
